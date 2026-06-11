@@ -1,6 +1,9 @@
 import { Link, useParams, Navigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { useTours } from '../context/ToursContext.jsx'
+import PageSeo from '../components/seo/PageSeo.jsx'
+import { SITE_NAME } from '../constants/site.js'
+import { getPublicSiteUrl } from '../config/wp.js'
 
 export default function TourDetail() {
   const { slug } = useParams()
@@ -9,8 +12,36 @@ export default function TourDetail() {
 
   if (!tour) return <Navigate to="/tours" replace />
 
+  const desc = tour.tagline || `${tour.title} — ${tour.durationDays}-day ${tour.destination} package.`
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'TouristTrip',
+    name: tour.title,
+    description: desc,
+    touristType: 'Leisure',
+    image: tour.heroImage ? [tour.heroImage] : undefined,
+    itinerary: tour.itinerary?.map((d) => ({
+      '@type': 'TouristDestination',
+      name: d.title,
+      description: d.description,
+    })),
+    offers: {
+      '@type': 'Offer',
+      priceCurrency: tour.currency || 'INR',
+      price: tour.priceFrom,
+      url: `${getPublicSiteUrl()}/tours/${tour.slug}`,
+    },
+  }
+
   return (
     <div>
+      <PageSeo
+        title={`${tour.title} | ${SITE_NAME}`}
+        description={desc}
+        canonicalPath={`/tours/${tour.slug}`}
+        ogImage={tour.heroImage}
+        jsonLd={jsonLd}
+      />
       <section className="relative h-[min(52vh,420px)] overflow-hidden">
         <img src={tour.heroImage} alt="" className="absolute inset-0 h-full w-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/50 to-transparent" />

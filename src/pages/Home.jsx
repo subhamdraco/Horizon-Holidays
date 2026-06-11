@@ -1,6 +1,9 @@
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { useTours } from '../context/ToursContext.jsx'
+import PageSeo from '../components/seo/PageSeo.jsx'
+import { SITE_NAME, SITE_TITLE } from '../constants/site.js'
+import { getPublicSiteUrl } from '../config/wp.js'
 
 const fade = {
   hidden: { opacity: 0, y: 16 },
@@ -25,6 +28,18 @@ export default function Home() {
 
   return (
     <div>
+      <PageSeo
+        title={SITE_TITLE}
+        description={`${SITE_NAME} — international packages, flights, hotels & curated itineraries.`}
+        canonicalPath="/"
+        ogImage="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=1200&q=80"
+        jsonLd={{
+          '@context': 'https://schema.org',
+          '@type': 'WebSite',
+          name: SITE_NAME,
+          url: `${getPublicSiteUrl()}/`,
+        }}
+      />
       {/* Hero */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=2000&q=80')] bg-cover bg-center" />

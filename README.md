@@ -31,6 +31,21 @@ Tour data is stored in **`localStorage`** under `holiday-tours-db-v1` (per brows
 - Framer Motion  
 - Tailwind CSS v4 (`@tailwindcss/vite`)
 
+## WordPress (headless CMS) + SEO
+
+Full WordPress checklist (nothing skipped): **`docs/WORDPRESS_SETUP_STEP_BY_STEP.md`**
+
+Full guide: **`docs/WORDPRESS_HEADLESS_SEO.md`** — REST API, CORS, sitemaps, Yoast/Rank Math, canonical strategy, and production SEO.
+
+| Artifact | Purpose |
+|----------|---------|
+| `docs/wp-theme-functions-snippet.php` | Register `tour` CPT + REST meta for the React mapper |
+| `.env.example` | `VITE_WORDPRESS_REST_URL`, `VITE_PUBLIC_SITE_URL` |
+| `src/services/wpClient.js` | Fetch tours from WP |
+| `src/components/seo/PageSeo.jsx` | `<title>`, meta, canonical, OG, JSON-LD |
+
+When `VITE_WORDPRESS_REST_URL` is set, **`ToursProvider`** loads published tours from WordPress on startup (falls back to seed/localStorage if the request fails or returns nothing).
+
 ## Project path
 
 `Desktop/Projects/Personal/codes/holiday-tours`

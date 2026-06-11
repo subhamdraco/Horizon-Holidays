@@ -1,5 +1,7 @@
-import { createContext, useContext, useEffect, useMemo, useState, useCallback } from 'react'
+import { createContext, useContext, useEffect, useMemo, useState, useCallback, useRef } from 'react'
 import { SEED_TOURS } from '../data/seedTours.js'
+import { isWpEnabled } from '../config/wp.js'
+import { fetchToursFromWordPress } from '../services/wpClient.js'
 
 const STORAGE_KEY = 'holiday-tours-db-v1'
 
@@ -23,6 +25,22 @@ function persist(tours) {
 
 export function ToursProvider({ children }) {
   const [tours, setTours] = useState(loadInitial)
+  const wpHydrated = useRef(false)
+
+  useEffect(() => {
+    if (!isWpEnabled() || wpHydrated.current) return
+    let cancelled = false
+    ;(async () => {
+      const fromWp = await fetchToursFromWordPress()
+      if (!cancelled && fromWp.length > 0) {
+        wpHydrated.current = true
+        setTours(fromWp)
+      }
+    })()
+    return () => {
+      cancelled = true
+    }
+  }, [])
 
   useEffect(() => {
     persist(tours)

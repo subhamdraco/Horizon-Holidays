@@ -1,12 +1,19 @@
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { useTours } from '../context/ToursContext.jsx'
+import PageSeo from '../components/seo/PageSeo.jsx'
+import { SITE_NAME } from '../constants/site.js'
 
 export default function Tours() {
   const { tours } = useTours()
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+      <PageSeo
+        title={`Holiday packages | ${SITE_NAME}`}
+        description="Browse international and weekend holiday packages with day-by-day itineraries and transparent pricing."
+        canonicalPath="/tours"
+      />
       <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="max-w-2xl">
         <h1 className="font-display text-4xl font-bold text-slate-900">All holiday packages</h1>
         <p className="mt-3 text-slate-600">

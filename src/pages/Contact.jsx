@@ -1,8 +1,15 @@
 import { motion } from 'framer-motion'
+import PageSeo from '../components/seo/PageSeo.jsx'
+import { SITE_NAME } from '../constants/site.js'
 
 export default function Contact() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
+      <PageSeo
+        title={`Contact | ${SITE_NAME}`}
+        description={`Contact ${SITE_NAME} for flights, hotels, and tailor-made holiday packages.`}
+        canonicalPath="/contact"
+      />
       <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="font-display text-4xl font-bold text-slate-900">Contact</h1>
         <p className="mt-4 text-slate-600">
